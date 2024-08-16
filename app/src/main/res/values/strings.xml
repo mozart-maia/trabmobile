@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Conversor</string>
+    <string name="usd">USD</string>
+    <string name="conversor_de_moedas">Conversor de moedas</string>
+    <string name="para">Para</string>
+    <string name="brl">BRL</string>
+    <string name="converter">Converter</string>
+</resources>
