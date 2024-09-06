@@ -62,11 +62,11 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Data de cotação"
+            android:text="Ultima cotação"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/editTextCotacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
