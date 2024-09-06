@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
+        Double cotacaoUSDBRL = 0.0;
+        Double cotacaoBRLUSD = 0.0;
+
+
+
         new Thread(){
             public void run() {
                 StringBuilder response = new StringBuilder();
@@ -52,29 +58,37 @@ public class MainActivity extends AppCompatActivity {
                         new Runnable() {
                             public void run() {
                                 String usdbrl_allinfo = "";
-                                Double onlyprice_usdbrl = 0.0;
+                                double onlyprice_usdbrl = 0.0;
                                 try {
                                     JSONObject all = new JSONObject(response.toString());
-                                    usdbrl_allinfo = all.getString("USDBRL");
-                                    JSONObject price = new JSONObject(usdbrl_allinfo);
-                                    onlyprice_usdbrl = price.getDouble("bid");
 
+                                    Button btn_de = findViewById(R.id.button_de);
+                                    String de_text = btn_de.getText().toString();
+                                    if (de_text.equals("USD")){
+                                        usdbrl_allinfo = all.getString("USDBRL");
+                                        JSONObject price = new JSONObject(usdbrl_allinfo);
+                                        onlyprice_usdbrl = price.getDouble("bid");
+                                    } else {
+                                        usdbrl_allinfo = all.getString("BRLUSD");
+                                        JSONObject price = new JSONObject(usdbrl_allinfo);
+                                        onlyprice_usdbrl = price.getDouble("bid");
+                                    }
                                 } catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
-                                Toast.makeText(MainActivity.this, "Buscando ultima cotação: " + onlyprice_usdbrl.toString() + "...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Buscando ultima cotação: " + Double.toString(onlyprice_usdbrl) + "...", Toast.LENGTH_SHORT).show();
                                 EditText et = findViewById(R.id.editTextCotacao);
-                                et.setText(onlyprice_usdbrl.toString());
+                                et.setText(Double.toString(onlyprice_usdbrl));
                             }
                         }
                 );
             }
 
             private @NonNull BufferedReader getBufferedReader(StringBuilder response) throws IOException {
-                URL url = new URL("https://economia.awesomeapi.com.br/json/last/USD-BRL,USD-EUR,EUR-BRL");
+                URL url = new URL("https://economia.awesomeapi.com.br/json/last/USD-BRL,BRL-USD");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                int responseCode = connection.getResponseCode();
+//                int responseCode = connection.getResponseCode();
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
@@ -85,12 +99,38 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
         Button btn_converter = findViewById(R.id.btn_converter);
-        btn_converter.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent("OPEN_RESULT");
-                startActivity(i);
+        Button btn_de = findViewById(R.id.button_de);
+        Button btn_para = findViewById(R.id.button_para);
+        Button btn_swap = findViewById(R.id.button_swap);
+        EditText et_valor = findViewById(R.id.editText_valor);
+        EditText et_cotacao = findViewById(R.id.editTextCotacao);
+
+
+        btn_swap.setOnClickListener(v -> {
+            String de_text = btn_de.getText().toString();
+            if (de_text.equals("USD")) {
+                btn_de.setText("BRL");
+                btn_para.setText("USD");
+            } else {
+                btn_de.setText("USD");
+                btn_para.setText("BRL");
             }
+
+
+        });
+
+        btn_converter.setOnClickListener(v -> {
+            double cotacao = Double.parseDouble(String.valueOf(et_cotacao.getText()));
+            double valor = Double.parseDouble(String.valueOf(et_valor.getText()));
+            String resultado = String.format("%.2f",valor / cotacao);
+            Bundle b = new Bundle();
+            b.putString("valor", String.valueOf(valor));
+            b.putString("resultado", resultado);
+            b.putString("moeda_origem", "USD");
+            b.putString("moeda_final", "BRL");
+            Intent i = new Intent("OPEN_RESULT");
+            i.putExtras(b);
+            startActivity(i);
         });
     }
 }

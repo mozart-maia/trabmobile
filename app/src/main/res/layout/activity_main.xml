@@ -69,6 +69,7 @@
             android:id="@+id/editTextCotacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:editable="false"
             android:ems="10"
             android:inputType="date"
             android:textAlignment="center" />
@@ -81,7 +82,7 @@
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal"
+            android:id="@+id/editText_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -96,7 +97,7 @@
             android:textAlignment="center" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button_de"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -105,7 +106,7 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/button_swap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -121,7 +122,7 @@
             android:textAlignment="center" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/button_para"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
