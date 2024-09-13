@@ -2,7 +2,7 @@
 
 ### Feito em Android Nativo (Java)
 
-Para rodar:
+Para rodar baixe o apk na seção de releases (a direita) ou siga estes passos:
 
 - Faça o clone do projeto
 - Abra o projeto no Android Studio
