@@ -11,11 +11,11 @@ Para rodar:
 
 ### Requisitos funcionando
 
-- Busca cotação em tempo real do USD/BRL
+- Busca cotação em tempo real do USD/BRL (usa API REST)
 - Preenchimento de dados como valor a ser convertido ou cotação personalizada
 - Troca de moeda de conversão (USD-BRL,BRL-USD)
-- Exibição de dados
-- Salva as cotações em um banco de dados local (SQL)
+- Exibição de dados em segunda tela
+- Salva as cotações em um banco de dados local (SQLite)
 
 ### Telas do aplicativo
 
