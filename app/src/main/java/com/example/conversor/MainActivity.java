@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e("error_request", e.toString());
                 }
-
+                // codigo da requisicao para cotacao com base nas moedas escolhidas
                 runOnUiThread(
                         new Runnable() {
                             public void run() {
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             private @NonNull BufferedReader getBufferedReader(StringBuilder response) throws IOException {
+                // api que estou utilizando
                 URL url = new URL("https://economia.awesomeapi.com.br/json/last/USD-BRL,BRL-USD");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -105,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         EditText et_valor = findViewById(R.id.editText_valor);
         EditText et_cotacao = findViewById(R.id.editTextCotacao);
 
-
         btn_swap.setOnClickListener(v -> {
             String de_text = btn_de.getText().toString();
             if (de_text.equals("USD")) {
@@ -118,11 +119,32 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
+        // ao clicar no botao converter vai executar as seguitnes ações
         btn_converter.setOnClickListener(v -> {
             double cotacao = Double.parseDouble(String.valueOf(et_cotacao.getText()));
             double valor = Double.parseDouble(String.valueOf(et_valor.getText()));
             String resultado = String.format("%.2f",valor / cotacao);
+
+            //codigo para inserir calculo de cotacao ao banco de dados:
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    HistoricoCotacao hc = new HistoricoCotacao();
+                    // gerando um id aleatorio para inserir no banco de dados
+                    Random rand = new Random();
+                    int nr = rand.nextInt(1000000000);
+                    hc.setId(nr);
+                    hc.setValor(String.valueOf(valor));
+                    Log.i("valor_banco", String.valueOf(et_valor.getText()));
+                    hc.setCotacao(String.valueOf(cotacao));
+                    hc.setMoedaOrigem("USD");
+                    hc.setMoedaFinal("BRL");
+                    BD bd = new BD(getBaseContext());
+                    bd.inserir(hc);
+                }
+            });
+
+            // enviando para a segunda activity atraves de intent
             Bundle b = new Bundle();
             b.putString("valor", String.valueOf(valor));
             b.putString("resultado", resultado);
@@ -131,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent("OPEN_RESULT");
             i.putExtras(b);
             startActivity(i);
+
         });
     }
 }

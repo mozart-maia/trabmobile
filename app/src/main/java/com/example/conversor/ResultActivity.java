@@ -29,6 +29,8 @@ public class ResultActivity extends AppCompatActivity {
         Intent i = getIntent();
         Bundle b = i.getExtras();
 
+        //pego as infos que foram enviadas pelo intent da activity anterior e exibo no log info_result
+
         Log.i("info_result", b.getString("valor"));
         Log.i("info_result", b.getString("resultado"));
         Log.i("info_result", b.getString("moeda_origem"));
@@ -39,13 +41,15 @@ public class ResultActivity extends AppCompatActivity {
         TextView tv_valor = findViewById(R.id.textView_valor);
         TextView tv_resultado = findViewById(R.id.textView_resultado);
 
+        // seto os valores dos textView para exibir
+
         tv_moeda_origem.setText(b.getString("moeda_origem"));
         tv_moeda_final.setText(b.getString("moeda_final"));
         tv_resultado.setText(b.getString("resultado"));
         tv_valor.setText(b.getString("valor"));
 
 
-
+        // botão para retornar para a tela anterior (finaliza a activity atual, destruindo os componentes)
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
